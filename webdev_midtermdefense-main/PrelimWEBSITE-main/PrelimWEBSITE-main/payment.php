@@ -44,6 +44,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $payment_method = htmlspecialchars($_POST['payment_method']);
     $contact_info = htmlspecialchars($_POST['contact_info']); 
 
+    // Validate input
     if (!preg_match("/^[a-zA-Z]+$/", $first_name) || !preg_match("/^[a-zA-Z]+$/", $last_name)) {
         echo "<h2>Error: First and last names should contain letters only (no special characters or numbers).</h2>";
         exit();
@@ -61,12 +62,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['amount'] = $amount;
     $_SESSION['email'] = $email;
 
-    $receipt = new Receipt($_SESSION['full_name'], $_SESSION['bankacc'], $_SESSION['amount'], $_SESSION['email']);
-
-    // Simulate the payment process here (if you want to simulate GCash or PayPal):
+    // Simulate payment
     echo "<h2>Simulating payment for {$payment_method}...</h2>";
     echo "<h2>Payment Successful!</h2>";
-    echo $receipt->generateReceipt(); // Display the receipt directly for the simulation
+    
+    // Generate and display the receipt
+    $receipt = new Receipt($_SESSION['full_name'], $_SESSION['bankacc'], $_SESSION['amount'], $_SESSION['email']);
+    echo $receipt->generateReceipt(); 
     exit(); 
 }
 ?>
